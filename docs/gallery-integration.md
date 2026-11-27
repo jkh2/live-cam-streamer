@@ -2,6 +2,24 @@
 
 **The vision (James):** a person's saved live cams become **stars in space**. They fly from star to star. As they approach, a star **blooms into an animated thumbnail** of its live feed. Clicking a thumbnail plays that video in the main app. Every save adds a star, so someone with thousands of saved cams has a galaxy of thousands of stars.
 
+**Repo:** https://github.com/jkh2/live-cam-streamer (branch `main`)
+
+## 0. Where your work goes
+
+| Path | Rule |
+|---|---|
+| `js/gallery-view.js` | **Replace.** Your entry point. Must `export function mountGallery(root, api)` |
+| `css/gallery.css` | **Replace.** All your styles, scoped under `.nh-gallery` |
+| `js/gallery/` | **New, optional.** Any extra modules you want (e.g. `js/gallery/starfield.js`, `js/gallery/layout.js`). Import them from `gallery-view.js` with relative paths like `./gallery/starfield.js` |
+| `assets/gallery/` | **New, optional.** Small local assets (sprites, noise textures). Local files *can* be WebGL textures; only YouTube's images can't |
+| everything else | **Don't edit.** Especially `index.html`, `js/main.js`, `js/store.js`, `js/globe.js`, `data/cams.json`. If you need something from the main app, ask James and Claude will add it to `api` |
+
+Deliver it one of two ways:
+1. **Pull request (preferred):** branch `grok/starfield-gallery` → PR into `main`, so Claude can review integration before it goes live.
+2. **Files to James:** give him the complete files with their paths. He uploads them on GitHub (Add file → Upload files, into the right folders).
+
+Done means: `python3 -m http.server` → open the app → ★ opens your galaxy → clicking a bloomed card closes it and plays that cam on the globe → ✕ / Esc returns to Earth with no console errors and no leftover iframes or animation loops.
+
 **Your job:** build `js/gallery-view.js` (plus `css/gallery.css`). You don't build a video player; the main app already has one. Claude ships a basic placeholder at that path so the app works today. Your module **replaces that file**, and nothing else has to change, as long as you follow this contract.
 
 ---
