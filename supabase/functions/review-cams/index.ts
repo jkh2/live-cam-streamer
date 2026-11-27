@@ -25,8 +25,13 @@ function safeEqual(a: string, b: string) {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
-  const adminKey = Deno.env.get("ADMIN_KEY") || "";
-  if (adminKey.length < 16) return json({ ok: false, error: "Review is not set up yet (ADMIN_KEY secret missing or too short)." }, 503);
+  const adminKey = (Deno.env.get("ADMIN_KEY") || "").trim();
+  if (adminKey.length < 16) {
+    // Setup help: say what's wrong without revealing any secret value.
+    const similar = Object.keys(Deno.env.toObject()).filter((k) => /admin/i.test(k) && k !== "ADMIN_KEY");
+    const why = !adminKey ? "the ADMIN_KEY secret isn’t set" : "ADMIN_KEY is shorter than 16 characters";
+    return json({ ok: false, error: `Review is not set up yet: ${why}.${similar.length ? ` Found a similarly named secret: ${similar.join(", ")}. The name must be exactly ADMIN_KEY.` : ""}` }, 503);
+  }
   if (!safeEqual(req.headers.get("x-admin-key") || "", adminKey)) {
     await new Promise((r) => setTimeout(r, 600)); // slow down guessing
     return json({ ok: false, error: "Wrong admin key." }, 401);
