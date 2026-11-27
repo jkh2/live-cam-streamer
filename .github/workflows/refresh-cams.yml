@@ -1,0 +1,26 @@
+name: Refresh live cams
+on:
+  schedule:
+    - cron: "17 9 * * *"   # daily, 09:17 UTC
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Verify cams are live and embeddable
+        env:
+          YT_API_KEY: ${{ secrets.YT_API_KEY }}
+        run: python3 tools/refresh_cams.py
+      - name: Commit changes
+        run: |
+          if git diff --quiet data/cams.json; then echo "No changes"; exit 0; fi
+          git config user.name "now-here-bot"
+          git config user.email "now-here-bot@users.noreply.github.com"
+          git add data/cams.json
+          git commit -m "Nightly cam refresh"
+          git push

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Now Here · live windows on Earth</title>
+<meta name="description" content="A living globe of live video cams that their owners chose to share with the world. Follow the sunrise, wander, and save your favorite windows.">
+<meta name="theme-color" content="#02040b">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/gallery.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='22' fill='%2302040b' stroke='%236fd3ff' stroke-width='3'/%3E%3Ccircle cx='38' cy='26' r='4' fill='%23ffc56b'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="stage"></div>
+
+<svg id="tether" aria-hidden="true">
+  <defs><linearGradient id="tg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0"><stop offset="0"/></linearGradient></defs>
+  <path id="tether-glow"/><path id="tether-path"/><circle id="tether-src" r="5"/><circle id="tether-dot" r="3.5"/>
+</svg>
+
+<header id="top">
+  <div class="brand" title="Now Here: live windows on Earth">
+    <div class="logo"><span></span></div>
+    <div><div class="name">NOW&nbsp;HERE</div><div class="tag">live windows on Earth</div></div>
+  </div>
+  <div id="searchbar">
+    <span class="s-ico">⌕</span>
+    <input id="search" type="search" placeholder="Search a place, a cam, or “wildlife”…" autocomplete="off" spellcheck="false" aria-label="Search">
+    <kbd>/</kbd>
+    <div id="results" role="listbox"></div>
+  </div>
+  <div class="right">
+    <div id="clock" class="mono"></div>
+    <button id="btn-gallery" class="icon-btn" title="My Gallery (G)">★<sup id="gallery-count"></sup></button>
+    <button id="btn-sound" class="icon-btn" title="Sound">♪</button>
+    <button id="btn-settings" class="icon-btn" title="Settings">⚙</button>
+    <button id="btn-about" class="icon-btn" title="About">?</button>
+  </div>
+</header>
+
+<div id="stats"></div>
+
+<footer id="dock">
+  <div id="chips"></div>
+  <div class="modes">
+    <button data-tour="sun" class="mode"><span>🌅 Follow the sun</span></button>
+    <button data-tour="wander" class="mode"><span>🧭 Wander</span></button>
+    <button id="btn-random" class="mode"><span>🎲 Surprise me</span></button>
+  </div>
+</footer>
+
+<div id="hovercard"></div>
+
+<aside id="window" aria-hidden="true">
+  <div class="w-head">
+    <div>
+      <div class="w-kicker"><span class="live-dot"></span>LIVE · <span id="w-cat"></span></div>
+      <h2 id="w-name"></h2>
+      <div id="w-place"></div>
+    </div>
+    <button id="w-close" class="icon-btn" title="Close (Esc)">✕</button>
+  </div>
+  <div id="w-video" class="w-video"></div>
+  <div id="w-notice" class="w-notice" hidden></div>
+  <div id="w-tour" class="w-tour" hidden></div>
+  <div id="w-meta" class="w-meta"></div>
+  <div class="w-actions">
+    <button id="w-save" class="btn primary">☆ Save</button>
+    <button id="w-share" class="btn">⧉ Share</button>
+    <button id="w-wall" class="btn" title="Watch this with your saved cams">▦ Wall</button>
+    <a id="w-yt" class="btn" target="_blank" rel="noopener">↗ YouTube</a>
+    <a id="w-report" class="btn ghost" target="_blank" rel="noopener" title="Report a problem with this camera">⚑</a>
+  </div>
+  <div id="w-by" class="w-by"></div>
+  <div class="w-sub">Nearby windows</div>
+  <div id="w-nearby" class="w-nearby"></div>
+</aside>
+
+<section id="gallery-layer" aria-label="My Gallery">
+  <div id="gallery-root" class="nh-gallery"></div>
+  <button id="gallery-close" class="icon-btn big" title="Back to Earth (Esc)">✕</button>
+</section>
+
+<section id="wall" aria-label="Watch wall">
+  <div class="wall-head"><b>Watch wall</b><span>All muted. Unmute any tile from its controls.</span><button id="wall-close" class="icon-btn" title="Close (Esc)">✕</button></div>
+  <div id="wall-grid"></div>
+</section>
+
+<div id="settings" class="modal">
+  <div class="card">
+    <button class="icon-btn close" data-close>✕</button>
+    <h3>Settings</h3>
+    <label class="field"><span>YouTube Data API key <em>(optional, free)</em></span>
+      <input id="yt-key" type="password" placeholder="AIza…" autocomplete="off"></label>
+    <div class="row"><button id="key-save" class="btn primary">Save &amp; verify</button><span id="key-status" class="dim"></span></div>
+    <p class="dim small">With a key, Now Here can (1) check which catalog cams are live <b>right now</b> and hide the rest, and (2) search all of YouTube Live for any place, showing only streams that are live and that their owners allow to be embedded. The key stays in this browser and is only sent to Google. Get one free at <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener">Google Cloud Console</a> → enable “YouTube Data API v3” → Credentials → API key. Restricting it to your site’s address is a good idea.</p>
+    <label class="toggle"><input id="sound-toggle" type="checkbox"> Interface sounds</label>
+  </div>
+</div>
+
+<div id="about" class="modal">
+  <div class="card">
+    <button class="icon-btn close" data-close>✕</button>
+    <h3>Now Here</h3>
+    <p>Every light on this globe is a live camera somebody <b>chose</b> to share with the world: a town square, a waterhole, a harbor, a feeder, an aurora cam. The globe’s sunlight is real and calculated for this moment, so you can watch day turn to night across the planet and catch the sunrise wherever it is happening now.</p>
+    <h4>Our rule</h4>
+    <ul>
+      <li><b>Live video only.</b> No recordings, no replays, no still-image cams.</li>
+      <li><b>Only cameras published on purpose.</b> Every stream comes from its owner’s public channel, with embedding allowed by that owner. We never scan the internet for cameras, and never show unsecured, private, or “found” cameras.</li>
+      <li><b>Owners stay in control.</b> If an owner turns off embedding or ends the stream, it disappears from Now Here. If you think a camera doesn’t belong, press ⚑ on it.</li>
+    </ul>
+    <h4>Keys</h4>
+    <p class="mono small">/ search · R surprise · N next nearby · S save · G gallery · Esc close</p>
+    <p class="dim small">Streams play through YouTube’s privacy-enhanced embed. Your gallery is stored only in this browser. Use Export in the gallery to move it to another device. Earth imagery: NASA Blue Marble &amp; Black Marble via three-globe. Place search © OpenStreetMap contributors.</p>
+  </div>
+</div>
+
+<div id="intro"><div class="intro-in"><div class="logo big"><span></span></div><h1>NOW HERE</h1><p id="intro-sub">opening windows on Earth…</p></div></div>
+<div id="toast" role="status"></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
