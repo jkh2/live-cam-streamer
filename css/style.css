@@ -33,6 +33,10 @@ a { color: var(--nh-accent); }
 .brand { display: flex; align-items: center; gap: 11px; user-select: none; }
 .brand .name { font-weight: 700; letter-spacing: .32em; font-size: 15px; }
 .brand .tag { font-size: 11px; color: var(--nh-dim); letter-spacing: .08em; margin-top: 2px; }
+.brand .by, .intro-by { font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; margin-top: 3px; color: var(--nh-gold);
+  text-shadow: 0 0 6px rgba(255,197,107,.75), 0 0 16px rgba(255,170,70,.45); animation: goldGlow 4s ease-in-out infinite; }
+.intro-by { text-align: center; font-size: 12px; margin: 10px 0 0; letter-spacing: .3em; padding-left: .3em; }
+@keyframes goldGlow { 50% { text-shadow: 0 0 9px rgba(255,197,107,.95), 0 0 24px rgba(255,170,70,.6); } }
 .logo { width: 30px; height: 30px; border-radius: 50%; position: relative; flex: none;
   background: radial-gradient(circle at 35% 35%, #183a6b, #050b1c 65%); box-shadow: 0 0 0 1.5px var(--nh-accent), 0 0 18px rgba(111,211,255,.45); overflow: hidden; }
 .logo::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: linear-gradient(100deg, transparent 52%, rgba(2,4,11,.88) 60%); animation: spinT 14s linear infinite; }
@@ -216,6 +220,7 @@ body.in-gallery #top, body.in-gallery #dock, body.in-gallery #stats, body.in-gal
 @media (max-width: 760px) {
   #top { flex-wrap: wrap; gap: 10px; padding: 10px 12px; }
   .brand .tag, #clock, #searchbar kbd, #btn-sound { display: none; }
+  .brand .by { font-size: 9px; letter-spacing: .1em; }
   .right { margin-left: auto; }
   #searchbar { order: 3; flex-basis: 100%; max-width: none; }
   #stats { top: 112px; font-size: 11px; }

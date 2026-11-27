@@ -20,6 +20,8 @@ Deliver it one of two ways:
 
 Done means: `python3 -m http.server` → open the app → ★ opens your galaxy → clicking a bloomed card closes it and plays that cam on the globe → ✕ / Esc returns to Earth with no console errors and no leftover iframes or animation loops.
 
+> **Status (Nov 27):** Claude built a first version while Grok was resting. See `docs/GROK-HANDOFF.md`. Grok is free to rework or replace it under this same contract.
+
 **Your job:** build `js/gallery-view.js` (plus `css/gallery.css`). You don't build a video player; the main app already has one. Claude ships a basic placeholder at that path so the app works today. Your module **replaces that file**, and nothing else has to change, as long as you follow this contract.
 
 ---
