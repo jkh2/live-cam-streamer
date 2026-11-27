@@ -36,6 +36,7 @@
   </div>
   <div class="right">
     <div id="clock" class="mono"></div>
+    <button id="btn-add" class="icon-btn add" title="Add your camera" hidden>＋</button>
     <button id="btn-gallery" class="icon-btn" title="My Gallery (G)">★<sup id="gallery-count"></sup></button>
     <button id="btn-sound" class="icon-btn" title="Sound">♪</button>
     <button id="btn-settings" class="icon-btn" title="Settings">⚙</button>
@@ -103,6 +104,39 @@
   </div>
 </div>
 
+<div id="submit" class="modal">
+  <div class="card">
+    <button class="icon-btn close" data-close>✕</button>
+    <h3>Add your camera</h3>
+    <p class="dim small">Share a live camera you stream on YouTube so people everywhere can find it. Every submission is reviewed by a person before it appears on the globe.</p>
+    <form id="submit-form" autocomplete="off" novalidate>
+      <label class="field"><span>YouTube live-stream link</span>
+        <input name="url" type="url" placeholder="https://www.youtube.com/watch?v=…" required></label>
+      <div id="sf-preview" class="sf-preview" hidden></div>
+      <label class="field"><span>Camera name</span>
+        <input name="name" maxlength="80" placeholder="e.g. Harbor View from Main Street" required></label>
+      <label class="field"><span>Where is it?</span>
+        <div class="sf-row"><input name="placeq" placeholder="Town, landmark, or address" required><button type="button" id="sf-find" class="btn">Find</button></div></label>
+      <div id="sf-places" class="sf-places"></div>
+      <label class="field"><span>What does it show?</span>
+        <select name="category" required>
+          <option value="">Choose one…</option>
+          <option value="city">City / street</option><option value="nature">Nature / landscape</option><option value="wildlife">Wildlife / birds</option>
+          <option value="beach">Beach / coast</option><option value="port">Harbor / port</option><option value="mountain">Mountain / ski</option>
+          <option value="rail">Rail</option><option value="aviation">Airport</option><option value="sky">Night sky / aurora</option><option value="underwater">Underwater</option>
+        </select></label>
+      <label class="field"><span>How can we reach you if there’s a question? <em>(optional, never shown)</em></span>
+        <input name="contact" maxlength="200" placeholder="email or YouTube handle"></label>
+      <label class="field"><span>Anything we should know? <em>(optional)</em></span>
+        <input name="note" maxlength="600"></label>
+      <input name="website" class="sf-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="check"><input type="checkbox" name="own"> This is my stream, or I have permission from its owner to share it.</label>
+      <label class="check"><input type="checkbox" name="public"> It’s meant for public viewing, and doesn’t show private homes, interiors, or people who haven’t agreed to be on camera.</label>
+      <div class="row"><button type="submit" class="btn primary" id="sf-send">Submit for review</button><span id="sf-status" class="dim"></span></div>
+    </form>
+  </div>
+</div>
+
 <div id="about" class="modal">
   <div class="card">
     <button class="icon-btn close" data-close>✕</button>
@@ -112,6 +146,7 @@
     <ul>
       <li><b>Live video only.</b> No recordings, no replays, no still-image cams.</li>
       <li><b>Only cameras published on purpose.</b> Every stream comes from its owner’s public channel, with embedding allowed by that owner. We never scan the internet for cameras, and never show unsecured, private, or “found” cameras.</li>
+      <li><b>Community cameras are reviewed by a person.</b> Anyone can submit a stream they own with ＋, and it appears only after approval.</li>
       <li><b>Owners stay in control.</b> If an owner turns off embedding or ends the stream, it disappears from Now Here. If you think a camera doesn’t belong, press ⚑ on it.</li>
     </ul>
     <h4>Keys</h4>

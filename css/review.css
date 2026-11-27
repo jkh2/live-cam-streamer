@@ -1,0 +1,31 @@
+body.review { overflow: auto; height: auto; min-height: 100%; background: radial-gradient(ellipse at 50% -10%, rgba(30,50,100,.35), transparent 60%), var(--nh-bg); }
+.rv-head { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 18px; padding: 14px 20px; background: rgba(2,4,11,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--nh-line); flex-wrap: wrap; }
+.rv-head .brand { text-decoration: none; color: inherit; }
+.rv-tabs { display: flex; gap: 6px; margin-left: auto; }
+.rv-tabs button { height: 36px; padding: 0 14px; border-radius: 10px; background: rgba(255,255,255,.03); border: 1px solid var(--nh-line); font-size: 13.5px; }
+.rv-tabs button.on { border-color: var(--nh-gold); color: var(--nh-gold); }
+.rv-tabs b { font-family: var(--nh-mono); font-size: 11.5px; margin-left: 4px; opacity: .8; }
+.rv-login { max-width: 440px; margin: 12vh auto; padding: 24px; border-radius: 18px; background: var(--nh-glass-2); border: 1px solid var(--nh-line); }
+.rv-login h2 { margin: 0 0 8px; }
+.rv-login form { display: flex; gap: 8px; margin-top: 14px; }
+.rv-login input { flex: 1; height: 40px; border-radius: 10px; padding: 0 12px; background: rgba(0,0,0,.3); border: 1px solid var(--nh-line); color: var(--nh-text); font-family: var(--nh-mono); }
+.rv-list { max-width: 1180px; margin: 0 auto; padding: 22px 20px 60px; display: flex; flex-direction: column; gap: 16px; }
+.rv-empty { text-align: center; color: var(--nh-dim); padding: 80px 0; }
+.rv-item { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 18px; padding: 16px; border-radius: 18px; background: var(--nh-glass); border: 1px solid var(--nh-line); }
+.rv-video { position: relative; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; background: #000; cursor: pointer; }
+.rv-video img, .rv-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; }
+.rv-video .play { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; letter-spacing: .1em; background: linear-gradient(0deg, rgba(0,0,0,.55), transparent 60%); color: #fff; }
+.rv-facts { margin-top: 10px; font-size: 12.5px; color: var(--nh-dim); display: grid; gap: 4px; }
+.rv-facts b { color: var(--nh-text); font-weight: 500; }
+.rv-facts .good { color: #7dffb0; } .rv-facts .warn { color: var(--nh-gold); }
+.rv-form { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; align-content: start; }
+.rv-form label { display: flex; flex-direction: column; gap: 4px; font-size: 11.5px; color: var(--nh-dim); grid-column: span 3; }
+.rv-form label.w2 { grid-column: span 2; } .rv-form label.w6 { grid-column: span 6; }
+.rv-form input, .rv-form select, .rv-form textarea { height: 36px; border-radius: 9px; padding: 0 10px; background: rgba(0,0,0,.3); border: 1px solid var(--nh-line); color: var(--nh-text); font: inherit; font-size: 13.5px; }
+.rv-form textarea { height: 56px; padding: 8px 10px; resize: vertical; }
+.rv-form select option { background: #0a1122; }
+.rv-quote { grid-column: span 6; font-size: 13px; padding: 9px 11px; border-radius: 10px; background: rgba(255,255,255,.03); border: 1px dashed var(--nh-line); color: #cfd8ee; }
+.rv-actions { grid-column: span 6; display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.btn.good { color: #062012; background: #7dffb0; border-color: #7dffb0; font-weight: 600; }
+.btn.bad { color: #ffb3ba; border-color: rgba(255,77,94,.5); }
+@media (max-width: 860px) { .rv-item { grid-template-columns: 1fr; } .rv-form label { grid-column: span 6; } .rv-form label.w2 { grid-column: span 3; } }

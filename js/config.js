@@ -4,6 +4,9 @@ export const CONFIG = {
   textures: 'https://cdn.jsdelivr.net/npm/three-globe@2.45.6/example/img/',
   tourSeconds: 40,                                 // Follow the Sun / Wander dwell time
   maxWall: 9,
+  // Community submissions (Supabase). Both values are public by design; leave blank to hide the feature.
+  supabaseUrl: '',
+  supabaseKey: '',   // publishable key (sb_publishable_…) or legacy anon key
 };
 
 export const CATEGORIES = {

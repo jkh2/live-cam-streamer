@@ -46,6 +46,16 @@ docs/                 integration notes
 ## Keeping the catalog fresh
 Add a repo secret `YT_API_KEY` (a YouTube Data API v3 key). The **Refresh live cams** action runs nightly. It checks each cam is live and embeddable, swaps in the owner's restarted stream when a 24/7 feed changes ids, and marks dead cams `offline` so the app hides them.
 
+## Community submissions (Supabase)
+Anyone can submit a live stream they own with **＋ Add your camera**. Nothing is published automatically:
+1. The `submit-cam` Edge Function checks the link is a real YouTube video whose owner allows embedding (and that it's live, if a `YT_API_KEY` secret is set). It rate-limits by hashed IP, then stores it as **pending**.
+2. You review at **`/review.html`** (protected by the `ADMIN_KEY` secret): preview the stream, check the location, fix the name, place or time zone, then **Approve** or **Reject**. Approval re-checks embedding first.
+3. Approved cams load onto everyone's globe with a COMMUNITY tag.
+
+The table allows **no direct writes** from browsers. The public can read only approved cams, and only their public columns. Contact info, notes and IP hashes are never exposed.
+
+Setup: run `supabase/migrations/001_cam_submissions.sql`, deploy `supabase/functions/submit-cam` and `review-cams` (JWT verification off; they do their own checks), set the `ADMIN_KEY` secret (and optionally `YT_API_KEY`), then fill `supabaseUrl` and `supabaseKey` (publishable key) in `js/config.js`.
+
 ## Adding cams
 Edit `data/cams.json`. Every cam needs: `id` (YouTube video id), `name`, `place`, `country`, `lat`, `lon`, `tz`, `category`, `channel`, `channelUrl`, `title`. Only add streams that are live, embeddable, and clearly published by their owner as a public camera.
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Now Here · Review queue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/review.css">
+</head>
+<body class="review">
+<header class="rv-head">
+  <a class="brand" href="./"><div class="logo"><span></span></div><div><div class="name">NOW&nbsp;HERE</div><div class="by">review queue</div></div></a>
+  <nav class="rv-tabs">
+    <button data-tab="pending" class="on">Pending <b id="n-pending"></b></button>
+    <button data-tab="approved">Approved <b id="n-approved"></b></button>
+    <button data-tab="rejected">Rejected <b id="n-rejected"></b></button>
+  </nav>
+  <button id="rv-lock" class="btn ghost" title="Forget the admin key on this device">Lock</button>
+</header>
+
+<section id="rv-login" class="rv-login" hidden>
+  <h2>Reviewer sign-in</h2>
+  <p class="dim">Enter the admin key you set as the <code>ADMIN_KEY</code> secret in Supabase. It’s kept only in this browser.</p>
+  <form id="rv-key-form"><input id="rv-key" type="password" placeholder="Admin key" autocomplete="current-password"><button class="btn primary">Unlock</button></form>
+  <p id="rv-login-msg" class="dim"></p>
+</section>
+
+<main id="rv-list" class="rv-list"></main>
+<div id="toast" role="status"></div>
+<script type="module" src="js/review.js"></script>
+</body>
+</html>

@@ -5,6 +5,7 @@ import { gallery } from './store.js';
 import { thumbUrl, embedUrl, watchUrl, getKey, setKey, verifyLive, searchLive, loadPlayerAPI } from './youtube.js';
 import { mountGallery } from './gallery-view.js';
 import { sound } from './sound.js';
+import { communityEnabled, loadCommunityCams, submitCam, videoIdFrom, guessTz } from './community.js';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -125,7 +126,7 @@ async function openCam(camOrId, { fromTour = false, fly = true } = {}) {
   const p = $('#window');
   const cat = CATEGORIES[cam.category] || CATEGORIES.discovered;
   p.style.setProperty('--c', cat.color);
-  $('#w-cat').textContent = cat.label;
+  $('#w-cat').innerHTML = esc(cat.label) + (cam.community ? ' · <span class="community">COMMUNITY</span>' : '');
   $('#w-name').textContent = cam.name;
   $('#w-place').textContent = `${cam.approx ? '≈ ' : ''}${cam.place}${cam.country && cam.country !== cam.place ? ' · ' + cam.country : ''}`;
   $('#w-by').innerHTML = `Streamed by <a href="${esc(cam.channelUrl)}" target="_blank" rel="noopener">${esc(cam.channel)}</a>`;
@@ -525,6 +526,13 @@ async function boot() {
   for (const c of state.catalog) if (c.offline) state.offline.add(c.id);
   rebuildCams();
   renderChips();
+  loadCommunityCams().then(extra => {
+    const have = new Set(state.catalog.map(c => c.id));
+    const fresh = extra.filter(c => !have.has(c.id));
+    if (!fresh.length) return;
+    state.catalog.push(...fresh);
+    rebuildCams(); renderChips();
+  });
 
   // intro: swoop in toward the sunset line, where city lights are switching on
   const sub = subsolarPoint();
@@ -555,7 +563,73 @@ async function boot() {
   wireUI();
 }
 
+// ---------- add your camera ----------
+let sfPlace = null;
+function wireSubmit() {
+  if (!communityEnabled()) return;
+  $('#btn-add').hidden = false;
+  $('#btn-add').addEventListener('click', () => { openModal('#submit'); $('#sf-status').textContent = ''; });
+  const f = $('#submit-form');
+
+  f.url.addEventListener('change', () => {
+    const id = videoIdFrom(f.url.value);
+    const pv = $('#sf-preview');
+    if (!id) { pv.hidden = false; pv.className = 'sf-preview warn'; pv.textContent = 'That doesn’t look like a YouTube link yet.'; return; }
+    const known = state.cams.find(c => c.id === id);
+    pv.hidden = false; pv.className = 'sf-preview' + (known ? ' warn' : '');
+    pv.innerHTML = `<img src="${thumbUrl(id, { size: 'mq' })}" alt=""><div>${known ? `This camera is already on the globe: <b>${esc(known.name)}</b>. <button type="button" class="link" data-fly="${esc(id)}">Show me</button>` : 'Found it. If this is a live stream, the picture is its latest frame.'}</div>`;
+  });
+  $('#sf-preview').addEventListener('click', e => { const b = e.target.closest('[data-fly]'); if (b) { closeModals(); openCam(b.dataset.fly); } });
+
+  async function findPlace() {
+    const q = f.placeq.value.trim(); if (q.length < 2) return;
+    const box = $('#sf-places'); box.innerHTML = '<div class="dim small">Searching…</div>';
+    try {
+      const r = await fetch('https://nominatim.openstreetmap.org/search?' + new URLSearchParams({ format: 'json', limit: 5, q }), { headers: { 'Accept-Language': 'en' } });
+      const list = await r.json();
+      if (!list.length) { box.innerHTML = '<div class="dim small">No match. Try a nearby town or landmark.</div>'; return; }
+      box.innerHTML = list.map((p, i) => `<button type="button" class="sf-place" data-i="${i}">${esc(p.display_name)}<small>${(+p.lat).toFixed(4)}°, ${(+p.lon).toFixed(4)}°</small></button>`).join('');
+      box.onclick = e => {
+        const b = e.target.closest('[data-i]'); if (!b) return;
+        const p = list[+b.dataset.i], parts = p.display_name.split(',').map(x => x.trim());
+        sfPlace = { lat: +p.lat, lon: +p.lon, place: parts.slice(0, 2).join(', '), country: parts[parts.length - 1] };
+        box.querySelectorAll('.sf-place').forEach(x => x.classList.toggle('on', x === b));
+      };
+      if (list.length === 1) box.querySelector('.sf-place').click();
+    } catch { box.innerHTML = '<div class="dim small">Place search is unavailable right now.</div>'; }
+  }
+  $('#sf-find').addEventListener('click', findPlace);
+  f.placeq.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); findPlace(); } });
+  f.placeq.addEventListener('input', () => { sfPlace = null; });
+
+  f.addEventListener('submit', async e => {
+    e.preventDefault();
+    const st = $('#sf-status'); st.className = 'dim';
+    const fail = m => { st.className = 'err'; st.textContent = m; };
+    const id = videoIdFrom(f.url.value);
+    if (!id) return fail('Please paste a YouTube live-stream link.');
+    if (state.cams.some(c => c.id === id)) return fail('That camera is already on the globe.');
+    if (f.name.value.trim().length < 2) return fail('Please give the camera a name.');
+    if (!sfPlace) return fail('Please press Find and choose where the camera is.');
+    if (!f.category.value) return fail('Please choose what the camera shows.');
+    if (!f.own.checked || !f.public.checked) return fail('Please confirm both statements.');
+    $('#sf-send').disabled = true; st.textContent = 'Checking the stream…';
+    try {
+      await submitCam({
+        url: f.url.value, name: f.name.value, place: sfPlace.place, country: sfPlace.country, lat: sfPlace.lat, lon: sfPlace.lon,
+        tz: guessTz(sfPlace.lon), category: f.category.value, contact: f.contact.value, note: f.note.value, website: f.website.value,
+        owner_attested: f.own.checked, public_ok: f.public.checked,
+      });
+      st.className = 'ok'; st.textContent = 'Thank you! Your camera is in the review queue and will appear on the globe once it’s approved.';
+      f.reset(); sfPlace = null; $('#sf-places').innerHTML = ''; $('#sf-preview').hidden = true;
+      sound.chime();
+    } catch (err) { fail(err.message); }
+    finally { $('#sf-send').disabled = false; }
+  });
+}
+
 function wireUI() {
+  wireSubmit();
   const search = $('#search');
   search.addEventListener('input', () => runSearch(search.value));
   search.addEventListener('focus', () => search.value && runSearch(search.value));
