@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Nightly catalog refresher for Now Here.
+Nightly catalog refresher for Sentinel Vantage.
 
 Uses the official YouTube Data API v3 (env var YT_API_KEY) to:
   1. check every cam in data/cams.json is still LIVE and EMBEDDABLE;

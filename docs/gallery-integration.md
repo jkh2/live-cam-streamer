@@ -1,4 +1,4 @@
-# Now Here — "My Gallery" Starfield: Integration Spec (for Grok)
+# Sentinel Vantage (formerly "Now Here"): "My Gallery" Starfield: Integration Spec (for Grok)
 
 **The vision (James):** a person's saved live cams become **stars in space**. They fly from star to star. As they approach, a star **blooms into an animated thumbnail** of its live feed. Clicking a thumbnail plays that video in the main app. Every save adds a star, so someone with thousands of saved cams has a galaxy of thousands of stars.
 
@@ -99,7 +99,7 @@ gallery.list()            // → Cam[] (newest first)
 gallery.has(id) / add(cam) / remove(id) / toggle(cam)
 gallery.reorder(ids)      // full ordered list of ids
 gallery.clear()
-gallery.exportJSON()      // → string (offer as a download: now-here-gallery.json)
+gallery.exportJSON()      // → string (offer as a download: sentinel-vantage-galaxy.json)
 gallery.importJSON(text)  // → number added (throws on a bad file)
 gallery.onChange(fn)      // fn(items) on any change, including other tabs; returns unsubscribe
 ```

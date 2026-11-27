@@ -31,7 +31,7 @@ a { color: var(--nh-accent); }
   background: linear-gradient(180deg, rgba(2,4,11,.85), rgba(2,4,11,0)); }
 #top > * { pointer-events: auto; }
 .brand { display: flex; align-items: center; gap: 11px; user-select: none; }
-.brand .name { font-weight: 700; letter-spacing: .32em; font-size: 15px; }
+.brand .name { font-weight: 700; letter-spacing: .24em; font-size: 15px; white-space: nowrap; }
 .brand .tag { font-size: 11px; color: var(--nh-dim); letter-spacing: .08em; margin-top: 2px; }
 .brand .by, .intro-by { font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; margin-top: 3px; color: var(--nh-gold);
   text-shadow: 0 0 6px rgba(255,197,107,.75), 0 0 16px rgba(255,170,70,.45); animation: goldGlow 4s ease-in-out infinite; }
@@ -233,7 +233,7 @@ body.in-gallery #top, body.in-gallery #dock, body.in-gallery #stats, body.in-gal
 /* ---------- intro & toast ---------- */
 #intro { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: radial-gradient(circle at 50% 55%, rgba(15,30,60,.5), var(--nh-bg) 60%); transition: opacity 1.4s ease, visibility 1.4s; }
 #intro.gone { opacity: 0; visibility: hidden; }
-#intro h1 { margin: 0; font-size: 30px; letter-spacing: .5em; padding-left: .5em; font-weight: 600; text-align: center; }
+#intro h1 { margin: 0; font-size: clamp(20px, 5.4vw, 30px); letter-spacing: .38em; padding-left: .38em; font-weight: 600; text-align: center; }
 #intro p { color: var(--nh-dim); text-align: center; letter-spacing: .14em; font-size: 13px; }
 #toast { position: fixed; left: 50%; bottom: 96px; transform: translate(-50%, 20px); z-index: 90; padding: 10px 16px; border-radius: 12px; font-size: 13.5px;
   background: var(--nh-glass-2); border: 1px solid var(--nh-line); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); opacity: 0; pointer-events: none; transition: .3s; }
@@ -244,6 +244,7 @@ body.in-gallery #top, body.in-gallery #dock, body.in-gallery #stats, body.in-gal
   #top { flex-wrap: wrap; gap: 10px; padding: 10px 12px; }
   .brand .tag, #clock, #searchbar kbd, #btn-sound { display: none; }
   .brand .by { font-size: 9px; letter-spacing: .1em; }
+  .brand .name { font-size: 12.5px; letter-spacing: .14em; }
   .right { margin-left: auto; }
   #searchbar { order: 3; flex-basis: 100%; max-width: none; }
   #stats { top: 112px; font-size: 11px; }

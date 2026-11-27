@@ -19,8 +19,8 @@ jobs:
       - name: Commit changes
         run: |
           if git diff --quiet data/cams.json; then echo "No changes"; exit 0; fi
-          git config user.name "now-here-bot"
-          git config user.email "now-here-bot@users.noreply.github.com"
+          git config user.name "sentinel-vantage-bot"
+          git config user.email "sentinel-vantage-bot@users.noreply.github.com"
           git add data/cams.json
           git commit -m "Nightly cam refresh"
           git push

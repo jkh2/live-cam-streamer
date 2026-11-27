@@ -133,14 +133,14 @@ export function mountGallery(root, api) {
       if (!api.gallery.list().length) return api.toast('Nothing to export yet');
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([api.gallery.exportJSON()], { type: 'application/json' }));
-      a.download = 'now-here-galaxy.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      a.download = 'sentinel-vantage-galaxy.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
     }
   });
   root.addEventListener('change', async e => {
     if (!e.target.matches('input[type=file]')) return;
     const f = e.target.files?.[0]; if (!f) return;
     try { const n = api.gallery.importJSON(await f.text()); api.toast(n ? `${n} new star${n === 1 ? '' : 's'} added` : 'Those stars are already in your galaxy'); if (n > 3) setTimeout(() => galaxy?.overview(), 400); }
-    catch { api.toast('That file isn’t a Now Here galaxy'); }
+    catch { api.toast('That file isn’t a Sentinel Vantage galaxy'); }
     e.target.value = '';
   });
 

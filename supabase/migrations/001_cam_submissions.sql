@@ -1,4 +1,4 @@
--- Community camera submissions for Now Here.
+-- Community camera submissions for Sentinel Vantage.
 -- Nobody writes to this table directly: submissions arrive through the `submit-cam` Edge Function
 -- (which checks the stream), and only the reviewer (through `review-cams`, admin key) can approve.
 -- The public can read approved cams only, and only their public columns.

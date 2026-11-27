@@ -1,4 +1,5 @@
-# Now Here · live windows on Earth
+# Sentinel Vantage · live windows on Earth
+*by Sentinel AI Systems*
 
 A real-time 3D globe of **live video cameras that their owners chose to share with the world**. The sunlight on the globe is calculated for this exact moment, so you can watch night fall across continents, see city lights come on, and catch the sunrise wherever it's happening right now.
 

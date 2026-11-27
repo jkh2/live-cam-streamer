@@ -1,5 +1,5 @@
 export const CONFIG = {
-  appName: 'Now Here',
+  appName: 'Sentinel Vantage',
   repo: 'jkh2/live-cam-streamer',                 // used for "report a camera" links
   textures: 'https://cdn.jsdelivr.net/npm/three-globe@2.45.6/example/img/',
   tourSeconds: 40,                                 // Follow the Sun / Wander dwell time

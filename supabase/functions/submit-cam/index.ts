@@ -79,7 +79,7 @@ Deno.serve(async (req) => {
     if (r.ok) {
       const v = (await r.json()).items?.[0];
       checkLive = v?.snippet?.liveBroadcastContent === "live";
-      if (!checkLive) return json({ ok: false, error: "That video isn’t live right now. Now Here only shows live streams. Submit it while it’s streaming." }, 422);
+      if (!checkLive) return json({ ok: false, error: "That video isn’t live right now. Sentinel Vantage only shows live streams. Submit it while it’s streaming." }, 422);
     }
   }
 

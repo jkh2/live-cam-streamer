@@ -1,4 +1,4 @@
-// My Gallery: saved cams, kept in this browser (localStorage), with an in-memory fallback.
+// Sentinel Vantage · My Gallery: saved cams, kept in this browser (localStorage), with an in-memory fallback.
 // This module is the single source of truth for saved cams. Any UI (including the
 // gallery view) reads and writes through it, and listens for changes.
 
@@ -54,12 +54,12 @@ export const gallery = {
     write(next);
   },
   clear() { write([]); },
-  exportJSON() { return JSON.stringify({ app: 'now-here', version: 1, exportedAt: new Date().toISOString(), items: read() }, null, 1); },
+  exportJSON() { return JSON.stringify({ app: 'sentinel-vantage', version: 1, exportedAt: new Date().toISOString(), items: read() }, null, 1); },
   /** Merge an exported file into the gallery. Returns number of cams added. */
   importJSON(text) {
     const doc = JSON.parse(text);
     const incoming = Array.isArray(doc) ? doc : doc.items;
-    if (!Array.isArray(incoming)) throw new Error('Not a Now Here gallery file');
+    if (!Array.isArray(incoming)) throw new Error('Not a Sentinel Vantage gallery file');
     const items = read(); let added = 0;
     for (const c of incoming) {
       if (!c || typeof c.id !== 'string' || !/^[\w-]{11}$/.test(c.id)) continue;
