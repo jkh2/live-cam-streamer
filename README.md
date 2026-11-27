@@ -5,6 +5,8 @@ A real-time 3D globe of **live video cameras that their owners chose to share wi
 
 **Live:** `https://jkh2.github.io/live-cam-streamer/` (once Pages is enabled)
 
+See **[ROADMAP.md](ROADMAP.md)** for what's next.
+
 ## What it does
 - **Living Earth:** NASA day and night imagery blended by the real sun position, ocean sun-glint, golden-hour band, atmosphere.
 - **146 hand-checked live cams** across every continent except Antarctica: cities, wildlife, beaches, harbors, mountains, rail, airports, aurora, underwater.
