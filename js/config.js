@@ -5,8 +5,8 @@ export const CONFIG = {
   tourSeconds: 40,                                 // Follow the Sun / Wander dwell time
   maxWall: 9,
   // Community submissions (Supabase). Both values are public by design; leave blank to hide the feature.
-  supabaseUrl: '',
-  supabaseKey: '',   // publishable key (sb_publishable_…) or legacy anon key
+  supabaseUrl: 'https://ymprbubkyznbswkmnjeh.supabase.co',
+  supabaseKey: 'sb_publishable_cPJ1derGcDGMyDfhxVea3g_lydJoVxs',   // publishable key (sb_publishable_…) or legacy anon key
 };
 
 export const CATEGORIES = {

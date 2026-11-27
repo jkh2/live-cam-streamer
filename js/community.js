@@ -15,7 +15,7 @@ const PUBLIC_COLS = 'video_id,name,place,country,lat,lon,tz,category,channel,cha
 export async function loadCommunityCams() {
   if (!communityEnabled()) return [];
   try {
-    const u = `${CONFIG.supabaseUrl}/rest/v1/cam_submissions?select=${PUBLIC_COLS}&status=eq.approved&order=reviewed_at.desc&limit=2000`;
+    const u = `${CONFIG.supabaseUrl}/rest/v1/cam_submissions?select=${PUBLIC_COLS}&order=reviewed_at.desc&limit=2000`;
     const r = await fetch(u, { headers: headers() });
     if (!r.ok) return [];
     return (await r.json()).map(c => ({
